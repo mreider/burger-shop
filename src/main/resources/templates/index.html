@@ -27,12 +27,12 @@
       $.ajax({
         type: 'POST',
         url: '/submitOrder',
-        data: { quantity: $('#quantity').val() },
+        data: $(this).serialize(),  // Ensure form data serialization
         success: function(response) {
           $('#order-response').html(`<div class="alert alert-success">${response}</div>`);
         },
-        error: function() {
-          $('#order-response').html('<div class="alert alert-danger">Failed</div>');
+        error: function(xhr) {
+          $('#order-response').html(`<div class="alert alert-danger">${xhr.responseText}</div>`);
         }
       });
     });
