@@ -1,6 +1,6 @@
-package com.example.burgershop.controller;
+package com.example.frontendservice.controller;
 
-import com.example.burgershop.service.FronEndService;
+import com.example.frontendservice.service.FrontEndService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class FrontEndController {
 
     @Autowired
-    private FronEndService fronEndService;
+    private FrontEndService fronEndService;
 
     @GetMapping("/")
     public String index() {
@@ -26,5 +26,4 @@ public class FrontEndController {
         return fronEndService.submitOrderToOrderService(quantity);
     }
 }
-
 

@@ -1,27 +1,154 @@
-# Compiled class file
-*.class
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
 
-# Log file
-*.log
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
 
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-replay_pid*
-
+### IntelliJ IDEA ###
 .idea
-.mvn
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+#######################################################
+######### git ignore files of frontendservice #########
+#######################################################
+frontendservice/HELP.md
+frontendservice/target/
+frontendservice/.mvn
+frontendservice/!.mvn/wrapper/maven-wrapper.jar
+frontendservice/!**/src/main/**/target/
+frontendservice/!**/src/test/**/target/
+
+### STS ###
+frontendservice/.apt_generated
+frontendservice/.classpath
+frontendservice/.factorypath
+frontendservice/.project
+frontendservice/.settings
+frontendservice/.springBeans
+frontendservice/.sts4-cache
+
+### IntelliJ IDEA ###
+frontendservice/.idea
+frontendservice/*.iws
+frontendservice/*.iml
+frontendservice/*.ipr
+
+### NetBeans ###
+frontendservice/nbproject/private/
+frontendservice/nbbuild/
+frontendservice/dist/
+frontendservice/nbdist/
+frontendservice/.nb-gradle/
+frontendservice/build/
+frontendservice/!**/src/main/**/build/
+frontendservice/!**/src/test/**/build/
+
+### VS Code ###
+frontendservice/.vscode/
+
+
+#######################################################
+####### git ignore files of fulfillmentservice ########
+#######################################################
+fulfillmentservice/HELP.md
+fulfillmentservice/target/
+fulfillmentservice/.mvn
+fulfillmentservice/!.mvn/wrapper/maven-wrapper.jar
+fulfillmentservice/!**/src/main/**/target/
+fulfillmentservice/!**/src/test/**/target/
+
+### STS ###
+fulfillmentservice/.apt_generated
+fulfillmentservice/.classpath
+fulfillmentservice/.factorypath
+fulfillmentservice/.project
+fulfillmentservice/.settings
+fulfillmentservice/.springBeans
+fulfillmentservice/.sts4-cache
+
+### IntelliJ IDEA ###
+fulfillmentservice/.idea
+fulfillmentservice/*.iws
+fulfillmentservice/*.iml
+fulfillmentservice/*.ipr
+
+### NetBeans ###
+fulfillmentservice/nbproject/private/
+fulfillmentservice/nbbuild/
+fulfillmentservice/dist/
+fulfillmentservice/nbdist/
+fulfillmentservice/.nb-gradle/
+fulfillmentservice/build/
+fulfillmentservice/!**/src/main/**/build/
+fulfillmentservice/!**/src/test/**/build/
+
+### VS Code ###
+fulfillmentservice/.vscode/
+
+
+#######################################################
+########## git ignore files of orderservice ###########
+#######################################################
+orderservice/HELP.md
+orderservice/target/
+orderservice/.mvn
+orderservice/!.mvn/wrapper/maven-wrapper.jar
+orderservice/!**/src/main/**/target/
+orderservice/!**/src/test/**/target/
+
+### STS ###
+orderservice/.apt_generated
+orderservice/.classpath
+orderservice/.factorypath
+orderservice/.project
+orderservice/.settings
+orderservice/.springBeans
+orderservice/.sts4-cache
+
+### IntelliJ IDEA ###
+orderservice/.idea
+orderservice/*.iws
+orderservice/*.iml
+orderservice/*.ipr
+
+### NetBeans ###
+orderservice/nbproject/private/
+orderservice/nbbuild/
+orderservice/dist/
+orderservice/nbdist/
+orderservice/.nb-gradle/
+orderservice/build/
+orderservice/!**/src/main/**/build/
+orderservice/!**/src/test/**/build/
+
+### VS Code ###
+orderservice/.vscode/
+
+
+
+
+
