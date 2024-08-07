@@ -1,0 +1,9 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: quacker-ssl-cert
+  namespace: burger-shop
+spec:
+  domains:
+    - grafana.quacker.eu
+    - quacker.eu

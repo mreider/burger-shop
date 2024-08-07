@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: burger-proxy
+  namespace: burger-shop 
+spec:
+  selector:
+    matchLabels:
+      app: burger-proxy
+  template:
+    metadata:
+      annotations:
+        oneagent.dynatrace.com/inject: "false"
+      labels:
+        app: burger-proxy
+    spec:
+      containers:
+        - name: burger-proxy
+          image: mreider/proxyservice:latest
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: "1"
+            requests:
+              cpu: "0.5"
+          env:
+            - name: SERVICE_NAME
+              value: "burger-proxy"
+            - name: FREQUENCY
+              value: "10.8"
+            - name: DYNATRACE_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: dynatrace-secrets
+                  key: dynatrace_token
+            - name: DYNATRACE_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: dynatrace-secrets
+                  key: dynatrace_endpoint

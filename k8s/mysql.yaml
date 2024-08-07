@@ -1,0 +1,93 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-initdb-config
+  namespace: burger-shop
+  labels:
+    servicename: mysql
+    app: burger-shop
+data:
+  init.sql: |
+    CREATE TABLE IF NOT EXISTS orders (
+        id BIGINT AUTO_INCREMENT PRIMARY KEY,
+        quantity INT NOT NULL,
+        fulfilled BOOLEAN DEFAULT FALSE
+    );
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  namespace: burger-shop
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+      annotations:
+        oneagent.dynatrace.com/inject: "false"
+    spec:
+      initContainers:
+      - name: init-mysql
+        image: mysql:8.0
+        imagePullPolicy: Always
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: burger_shop
+        volumeMounts:
+        - name: initdb
+          mountPath: /initdb
+        command: ["sh", "-c", "ls /initdb && cp /initdb/init.sql /docker-entrypoint-initdb.d/"]
+      containers:
+      - image: mysql:8.0
+        name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: burger_shop
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+        - name: initdb
+          mountPath: /docker-entrypoint-initdb.d
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim
+      - name: initdb
+        configMap:
+          name: mysql-initdb-config
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+  namespace: burger-shop
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: burger-shop
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: mysql

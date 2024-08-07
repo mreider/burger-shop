@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fulfillmentservice
+  namespace: burger-shop
+  labels:
+    servicename: fulfillmentservice
+    app: burger
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fulfillmentservice
+  template:
+    metadata:
+      labels:
+        app: fulfillmentservice
+      annotations:
+        oneagent.dynatrace.com/inject: "false"
+    spec:
+      containers:
+        - name: fulfillmentservice
+          image: mreider/fulfillmentservice:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8083
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"  
+          env:
+            - name: otel.exporter.otlp.traces.protocol
+              value: "http/protobuf"
+            - name: OTEL_INSTRUMENTATION_JDBC_ENABLED
+              value: "true"
+            - name: MYSQL_HOST
+              value: mysql
+            - name: MYSQL_USER
+              value: root
+            - name: MYSQL_PASSWORD
+              value: root
+            - name: SERVER_PORT
+              value: "8083"
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: otel-secrets
+                  key: otel-exporter-otlp-endpoint
+            - name: OTEL_EXPORTER_OTLP_HEADERS
+              valueFrom:
+                secretKeyRef:
+                  name: otel-secrets
+                  key: otel-exporter-otlp-headers
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: "service.name=fulfillmentservice"
+            - name: OTEL_JAVAAGENT_ENABLED
+              value: "true"
+          volumeMounts:
+            - name: otel-agent
+              mountPath: /otel-agent
+      volumes:
+        - name: otel-agent
+          emptyDir: { }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fulfillmentservice
+  namespace: burger-shop
+spec:
+  selector:
+    app: fulfillmentservice
+  ports:
+    - protocol: TCP
+      port: 8083
+      targetPort: 8083

@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orderservice
+  namespace: burger-shop
+  labels:
+    servicename: orderservice
+    app: burger
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: orderservice
+  template:
+    metadata:
+      labels:
+        app: orderservice
+    spec:
+      containers:
+        - name: orderservice
+          image: mreider/orderservice:latest
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"  
+          ports:
+            - containerPort: 8082
+          env:
+            - name: FULFILLMENTSERVICE_HOST
+              value: fulfillmentservice
+            - name: FULFILLMENTSERVICE_PORT
+              value: "8083"
+            - name: MYSQL_HOST
+              value: mysql
+            - name: MYSQL_USER
+              value: root
+            - name: MYSQL_PASSWORD
+              value: root
+            - name: SERVER_PORT
+              value: "8082"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orderservice
+  namespace: burger-shop
+spec:
+  selector:
+    app: orderservice
+  ports:
+    - protocol: TCP
+      port: 8082
+      targetPort: 8082

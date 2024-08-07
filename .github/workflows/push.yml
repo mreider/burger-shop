@@ -1,0 +1,40 @@
+name: Deploy to GKE
+
+on:
+  workflow_dispatch:
+
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  CLUSTER_NAME: ${{ secrets.GKE_CLUSTER_NAME }}
+  CLUSTER_ZONE: ${{ secrets.GKE_CLUSTER_ZONE }}
+  K8S_NAMESPACE: burger-shop
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@v0.2.1
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+
+    - name: Install gke-gcloud-auth-plugin
+      run: |
+        gcloud components install gke-gcloud-auth-plugin --quiet
+
+    - name: Configure kubectl
+      run: |
+        gcloud container clusters get-credentials $CLUSTER_NAME --zone $CLUSTER_ZONE --project $PROJECT_ID
+
+    - name: Apply Kubernetes manifests
+      run: |
+        kubectl apply -f k8s/frontendservice.yaml
+        kubectl apply -f k8s/fulfillmentservice.yaml
+        kubectl apply -f k8s/orderservice.yaml
+        kubectl rollout restart deployment frontendservice -n burger-shop
+        kubectl rollout restart deployment fulfillmentservice -n burger-shop
+        kubectl rollout restart deployment orderservice -n burger-shop

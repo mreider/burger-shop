@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: frontend-ingress
+  namespace: burger-shop
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.global-static-ip-name: "quacker-ip"
+    networking.gke.io/managed-certificates: quacker-ssl-cert
+    foo: buzz
+spec:
+  rules:
+  - host: quacker.eu
+    http:
+      paths:
+      - pathType: ImplementationSpecific
+        backend:
+          service:
+            name: frontendservice
+            port:
+              number: 80
+  - host: grafana.quacker.eu
+    http:
+      paths:
+      - pathType: ImplementationSpecific
+        backend:
+          service:
+            name: grafana
+            port:
+              number: 80

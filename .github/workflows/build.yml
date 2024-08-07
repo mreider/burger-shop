@@ -1,0 +1,56 @@
+name: Build and Push Docker Images
+
+on:
+  workflow_dispatch:
+
+env:
+  DOCKER_USERNAME: mreider
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'adopt'
+        java-version: '17'
+
+    - name: Log in to Docker Hub
+      run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+
+    - name: Get Git SHA
+      id: vars
+      run: echo "GIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+    - name: Build and push orderservice Docker image
+      run: |
+        cd orderservice
+        mvn clean package -DskipTests
+        docker build -t $DOCKER_USERNAME/orderservice:latest .
+        docker push $DOCKER_USERNAME/orderservice:latest
+
+    - name: Build and push fulfillmentservice Docker image
+      run: |
+        cd fulfillmentservice
+        mvn clean package -DskipTests
+        docker build -t $DOCKER_USERNAME/fulfillmentservice:latest .
+        docker push $DOCKER_USERNAME/fulfillmentservice:latest
+
+    - name: Build and push frontendservice Docker image
+      run: |
+        cd frontendservice
+        mvn clean package -DskipTests
+        docker build -t $DOCKER_USERNAME/frontendservice:latest .
+        docker push $DOCKER_USERNAME/frontendservice:latest
+
+    - name: Build and push proxyservice Docker image
+      run: |
+        cd proxyservice
+        docker build -t $DOCKER_USERNAME/proxyservice:latest .
+        docker push $DOCKER_USERNAME/proxyservice:latest
