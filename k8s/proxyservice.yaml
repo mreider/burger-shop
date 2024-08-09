@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: burger-proxy
-          image: mreider/proxyservice:latest
+          image: mreider/proxyservice:3
           imagePullPolicy: Always
           resources:
             limits:

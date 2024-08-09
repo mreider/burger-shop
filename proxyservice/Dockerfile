@@ -1,6 +1,18 @@
-FROM python:3.10.4-alpine3.15
+FROM python:3.10.4-slim-buster
+
+# Set the working directory
 WORKDIR /project
+
+# Copy the requirements file
 COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
+
+# Install dependencies
+RUN apt-get update && \
+    apt-get install -y build-essential && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application code
 COPY . .
-CMD ["python","proxyservice.py"]
+
+# Command to run the application
+CMD ["python", "proxyservice.py"]
