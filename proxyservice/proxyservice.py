@@ -41,7 +41,7 @@ for name in ["dt_metadata_e617c525669e072eebe3d0f08212e8f2.json", "/var/lib/dyna
     except:
         pass
 
-endpoint = os.getenv('DYNATRACE_ENDPOINT')
+endpoint = os.getenv('DYNATRACE_ENDPOINT') + "/api/v2/otlp"
 resource = Resource.create(merged)
 token_string = "Api-Token " + os.getenv('DYNATRACE_TOKEN')
 format = "%(asctime)s %(levelname)s [%(name)s] [%(filename)s:%(lineno)d] - %(message)s"
