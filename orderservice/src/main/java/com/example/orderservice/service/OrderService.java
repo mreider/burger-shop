@@ -45,7 +45,7 @@ public class OrderService {
             // Randomly trigger a memory leak
             if (new Random().nextInt(100) + 1 > 97) {
                 try {
-                    createMemoryLeak();
+                    pullFromInventory();
                 } catch (OutOfMemoryError e) {
                     e.printStackTrace();
                     return ResponseEntity.status(500).body("Server ran out of memory");
@@ -83,7 +83,7 @@ public class OrderService {
         */
     }
 
-    private void createMemoryLeak() {
+    private void pullFromInventory() {
         List<Object> list = new ArrayList<>();
         while (true) {
             list.add(new Object());
