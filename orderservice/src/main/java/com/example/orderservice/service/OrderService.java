@@ -20,7 +20,30 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
+@Service
+public class OrderService {
+    @Autowired
+    private OrderRepository orderRepository;
 
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    @Value("${rabbitmq.exchange}")
+    private String exchange;
+
+    @Value("${rabbitmq.routing.key}")
+    private String routingKey;
+
+    public ResponseEntity<String> placeOrder(int quantity) {
+        Order order = new Order();
+        order.setQuantity(quantity);
+        order = orderRepository.save(order);
+
+        rabbitTemplate.convertAndSend(exchange, routingKey, order);
+
+        return ResponseEntity.ok("Order placed with ID: " + order.getId());
+    }
+}
 /*
 @Service
 public class OrderService {
@@ -110,28 +133,3 @@ public class OrderService {
     }
 }
 */
-
-@Service
-public class OrderService {
-    @Autowired
-    private OrderRepository orderRepository;
-
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
-
-    @Value("${rabbitmq.exchange}")
-    private String exchange;
-
-    @Value("${rabbitmq.routing.key}")
-    private String routingKey;
-
-    public ResponseEntity<String> placeOrder(int quantity) {
-        Order order = new Order();
-        order.setQuantity(quantity);
-        order = orderRepository.save(order);
-
-        rabbitTemplate.convertAndSend(exchange, routingKey, order);
-
-        return ResponseEntity.ok("Order placed with ID: " + order.getId());
-    }
-}
