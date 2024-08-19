@@ -31,7 +31,7 @@ public class OrderService {
     @Value("${rabbitmq.exchange}")
     private String exchange;
 
-    @Value("${rabbitmq.routing.key}")
+    @Value("${rabbitmq.routing-key}")
     private String routingKey;
 
     public ResponseEntity<String> placeOrder(int quantity) {
