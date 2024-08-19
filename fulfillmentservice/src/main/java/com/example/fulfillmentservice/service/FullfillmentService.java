@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import java.util.concurrent.CompletableFuture;
 
+/*
 @Service
 public class FullfillmentService {
     @Autowired
@@ -30,5 +32,18 @@ public class FullfillmentService {
         });
 
         return CompletableFuture.completedFuture(null);
+    }
+}
+ */
+@Service
+public class FullfillmentService {
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @RabbitListener(queues = "${rabbitmq.queue}")
+    public void receiveOrder(Order order) {
+        order.setFulfilled(true);
+        orderRepository.save(order);
+        System.out.println("Order fulfilled: " + order.getId());
     }
 }
