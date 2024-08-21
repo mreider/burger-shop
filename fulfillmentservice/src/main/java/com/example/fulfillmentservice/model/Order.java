@@ -1,5 +1,6 @@
 package com.example.fulfillmentservice.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 @Entity
@@ -9,8 +10,11 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @JsonProperty("quantity")
     private Integer quantity;
 
+    @JsonProperty("fulfilled")
     private Boolean fulfilled = false;
 
     // Getters and setters
