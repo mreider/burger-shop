@@ -13,8 +13,9 @@ public class FullfillmentService {
 
     @RabbitListener(queues = "${rabbitmq.queue}")
     public void receiveOrder(Order order) {
+        System.out.println("Received order to fulfill: " + order.getId());
         order.setFulfilled(true);
         orderRepository.save(order);
-        System.out.println("Order ID " + order.getId() + " fulfilled.");
+        System.out.println("Order fulfilled: " + order.getId());
     }
 }

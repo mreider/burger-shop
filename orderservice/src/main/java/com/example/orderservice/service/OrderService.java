@@ -1,15 +1,14 @@
 package com.example.orderservice.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-
 import com.example.orderservice.model.Order;
 import com.example.orderservice.repository.OrderRepository;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Service
 public class OrderService {
@@ -37,7 +36,7 @@ public class OrderService {
             String orderJson = objectMapper.writeValueAsString(order);
             rabbitTemplate.convertAndSend(exchange, routingKey, orderJson);
             return ResponseEntity.ok("Order placed with ID: " + order.getId());
-        } catch (Exception e) {
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Failed to serialize and send order");
         }
