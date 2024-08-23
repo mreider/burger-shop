@@ -32,7 +32,7 @@ spec:
               cpu: "500m"
               memory: "512Mi"  
           env:
-            - name: otel.exporter.otlp.traces.protocol
+            - name: OTEL_EXPORTER_OTLP_TRACES_PROTOCOL
               value: "http/protobuf"
             - name: OTEL_INSTRUMENTATION_JDBC_ENABLED
               value: "true"
@@ -62,8 +62,6 @@ spec:
                 secretKeyRef:
                   name: otel-secrets
                   key: otel-exporter-otlp-headers
-            - name: OTEL_RESOURCE_ATTRIBUTES
-              value: "service.name=fulfillmentservice"
             - name: OTEL_JAVAAGENT_ENABLED
               value: "true"
           volumeMounts:

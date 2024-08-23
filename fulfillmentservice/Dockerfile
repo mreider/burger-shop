@@ -4,8 +4,8 @@ ADD https://github.com/open-telemetry/opentelemetry-java-instrumentation/release
 COPY target/fulfillmentservice-0.0.1-SNAPSHOT.jar fulfillmentservice.jar
 COPY startup.sh /startup.sh
 
-# Install jq for JSON parsing
-RUN apt-get update && apt-get install -y jq
+# Install Python for JSON parsing
+RUN apt-get update && apt-get install -y python3
 
 # Make the startup script executable
 RUN chmod +x /startup.sh
