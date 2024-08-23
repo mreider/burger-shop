@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: fulfillmentservice
-          image: mreider/fulfillmentservice:latest
+          image: mreider/fulfillmentservice:36
           imagePullPolicy: Always
           ports:
             - containerPort: 8083
@@ -44,6 +44,14 @@ spec:
               value: root
             - name: SERVER_PORT
               value: "8083"
+            - name: RABBITMQ_HOST
+              value: rabbitmq
+            - name: RABBITMQ_PORT
+              value: "5672"
+            - name: RABBITMQ_USERNAME
+              value: guest
+            - name: RABBITMQ_PASSWORD
+              value: guest
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               valueFrom:
                 secretKeyRef:

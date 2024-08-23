@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: orderservice
-          image: mreider/orderservice:latest
+          image: mreider/orderservice:36
           imagePullPolicy: Always
           resources:
             requests:
@@ -30,10 +30,6 @@ spec:
           ports:
             - containerPort: 8082
           env:
-            - name: FULFILLMENTSERVICE_HOST
-              value: fulfillmentservice
-            - name: FULFILLMENTSERVICE_PORT
-              value: "8083"
             - name: MYSQL_HOST
               value: mysql
             - name: MYSQL_USER
@@ -42,7 +38,14 @@ spec:
               value: root
             - name: SERVER_PORT
               value: "8082"
-
+            - name: RABBITMQ_HOST
+              value: rabbitmq
+            - name: RABBITMQ_PORT
+              value: "5672"
+            - name: RABBITMQ_USERNAME
+              value: guest
+            - name: RABBITMQ_PASSWORD
+              value: guest
 ---
 apiVersion: v1
 kind: Service
