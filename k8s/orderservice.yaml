@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: orderservice
-          image: mreider/orderservice:36
+          image: mreider/orderservice:37
           imagePullPolicy: Always
           resources:
             requests:
