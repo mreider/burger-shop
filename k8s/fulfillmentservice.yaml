@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: fulfillmentservice
-          image: mreider/fulfillmentservice:38
+          image: mreider/fulfillmentservice:39
           imagePullPolicy: Always
           ports:
             - containerPort: 8083
