@@ -35,7 +35,14 @@ public class OrderService {
         Order order = new Order();
         order.setQuantity(quantity);
         order = orderRepository.save(order);
-
+        if (new Random().nextInt(100) + 1 > 97) {
+            try {
+                pullFromInventory();
+            } catch (OutOfMemoryError e) {
+                e.printStackTrace();
+                return ResponseEntity.status(500).body("Server ran out of memory");
+            }
+        }
         try {
             String orderJson = objectMapper.writeValueAsString(order);
             MessageProperties messageProperties = new MessageProperties();
@@ -46,6 +53,12 @@ public class OrderService {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Failed to serialize and send order");
+        }
+    }
+    private void pullFromInventory() {
+        List<Object> list = new ArrayList<>();
+        while (true) {
+            list.add(new Object());
         }
     }
 }
