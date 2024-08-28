@@ -40,7 +40,7 @@ for name in ["dt_metadata_e617c525669e072eebe3d0f08212e8f2.json", "/var/lib/dyna
             merged.update(data)
     except:
         pass
-
+merged["KUBERNETES_CONTAINER_NAME"] = "fulfullmentservice"
 endpoint = "https://abl46885.dev.dynatracelabs.com/api/v2/otlp/v1/traces"
 resource = Resource.create(merged)
 token_string = "Api-Token " + os.getenv('DYNATRACE_TOKEN')

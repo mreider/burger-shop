@@ -23,7 +23,7 @@ done
 SERVICE_NAME="service.name=fulfillmentservice"
 
 # Convert underscores back to dots for OpenTelemetry attributes
-K8S_RESOURCE_ATTRIBUTES="k8s.pod.name=${k8s_pod_name:-unknown},k8s.namespace.name=${k8s_namespace_name:-unknown},k8s.node.name=${k8s_node_name:-unknown},k8s.pod.uid=${k8s_pod_uid:-unknown},dt.kubernetes.workload.kind=${dt_kubernetes_workload_kind:-unknown},dt.kubernetes.workload.name=${dt_kubernetes_workload_name:-unknown},dt.kubernetes.cluster.id=${dt_kubernetes_cluster_id:-unknown}"
+K8S_RESOURCE_ATTRIBUTES="KUBERNETES_CONTAINER_NAME=fulfullmentservice,k8s.pod.name=${k8s_pod_name:-unknown},k8s.namespace.name=${k8s_namespace_name:-unknown},k8s.node.name=${k8s_node_name:-unknown},k8s.pod.uid=${k8s_pod_uid:-unknown},dt.kubernetes.workload.kind=${dt_kubernetes_workload_kind:-unknown},dt.kubernetes.workload.name=${dt_kubernetes_workload_name:-unknown},dt.kubernetes.cluster.id=${dt_kubernetes_cluster_id:-unknown}"
 K8S_RESOURCE_ATTRIBUTES=$(echo $K8S_RESOURCE_ATTRIBUTES | sed 's/_/./g')
 
 # Combine service name and Kubernetes attributes

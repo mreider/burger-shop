@@ -13,6 +13,7 @@ update_image_version() {
 # Update image versions in YAML files
 new_fulfillmentservice_version=$(update_image_version "k8s/fulfillmentservice.yaml" "fulfillmentservice")
 new_orderservice_version=$(update_image_version "k8s/orderservice.yaml" "orderservice")
+new_proxy_version=$(update_image_version "k8s/proxy.yaml" "proxy")
 
 # Build and push fulfillmentservice Docker image
 cd fulfillmentservice/
@@ -24,9 +25,16 @@ cd ../orderservice/
 mvn clean package -DskipTests
 sudo -S docker buildx build --platform linux/amd64,linux/arm64 -t mreider/orderservice:$new_orderservice_version --push .
 
+# Build and push orderservice Docker image
+cd ../proxyservice/
+sudo -S docker buildx build --platform linux/amd64,linux/arm64 -t mreider/proxyservice:$new_proxy_version --push .
+
+
 cd ../k8s/
 kubectl apply -f fulfillmentservice.yaml
 kubectl apply -f orderservice.yaml
+kubectl apply -f proxyservice.yaml
+
 
 # Commit changes to GitHub
 git add .
