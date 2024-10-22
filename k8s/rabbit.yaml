@@ -42,9 +42,12 @@ spec:
             secretKeyRef:
               name: rabbitmq-secret
               key: RABBITMQ_DEFAULT_PASS
+        - name: RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS
+          value: "-rabbitmq_prometheus.enabled true"
         ports:
         - containerPort: 5672
         - containerPort: 15672
+        - containerPort: 15692  # Prometheus metrics port
 ---
 apiVersion: v1
 kind: Service
@@ -59,5 +62,8 @@ spec:
   - port: 15672
     targetPort: 15672
     name: management
+  - port: 15692
+    targetPort: 15692
+    name: prometheus-metrics  # Prometheus scraping port
   selector:
     app: rabbitmq
