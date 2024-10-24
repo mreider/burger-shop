@@ -17,7 +17,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: rabbitmq
-  namespace: burger-shop
+  namespace: burger-shop  
+  annotations:
+    app.kubernetes.io/component: "rabbitmq"
+  labels:
+    app: rabbitmq
 spec:
   replicas: 1
   selector:
